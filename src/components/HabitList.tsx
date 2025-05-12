@@ -10,7 +10,7 @@ import {
   Box,
   Chip,
 } from '@mui/material';
-import { Check, Delete } from '@mui/icons-material';
+import { Check, Delete, Close } from '@mui/icons-material';
 import { format, isToday, differenceInDays } from 'date-fns';
 import { Habit } from '../types';
 import localforage from 'localforage';
@@ -33,13 +33,25 @@ const HabitList: React.FC = () => {
     setHabits(updatedHabits);
   };
 
-  const completeHabit = async (habitId: string) => {
+  const toggleHabit = async (habitId: string) => {
     const updatedHabits = habits.map(habit => {
       if (habit.id === habitId) {
         const today = new Date().toISOString().split('T')[0];
         const isAlreadyCompletedToday = habit.completedDates.includes(today);
         
-        if (!isAlreadyCompletedToday) {
+        if (isAlreadyCompletedToday) {
+          // Remove today's completion and update streak
+          const completedDates = habit.completedDates.filter(date => date !== today);
+          const previousDate = completedDates[completedDates.length - 1];
+          
+          return {
+            ...habit,
+            streak: previousDate && differenceInDays(new Date(today), new Date(previousDate)) === 1 ? habit.streak - 1 : 0,
+            lastCompleted: previousDate || null,
+            completedDates,
+          };
+        } else {
+          // Complete the habit for today
           const lastCompleted = habit.lastCompleted;
           const streak = lastCompleted && differenceInDays(new Date(today), new Date(lastCompleted)) === 1
             ? habit.streak + 1
@@ -110,11 +122,11 @@ const HabitList: React.FC = () => {
                 <ListItemSecondaryAction>
                   <IconButton
                     edge="end"
-                    onClick={() => completeHabit(habit.id)}
-                    disabled={completedToday}
-                    color={completedToday ? undefined : "primary"}
+                    onClick={() => toggleHabit(habit.id)}
+                    color={completedToday ? "success" : "primary"}
+                    sx={{ mr: 1 }}
                   >
-                    <Check />
+                    {completedToday ? <Close /> : <Check />}
                   </IconButton>
                   <IconButton
                     edge="end"
