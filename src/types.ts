@@ -1,3 +1,8 @@
+export interface DailyNote {
+  date: string;
+  description: string;
+}
+
 export interface Habit {
   id: string;
   name: string;
@@ -6,6 +11,7 @@ export interface Habit {
   lastCompleted: string | null;
   createdAt: string;
   completedDates: string[];
+  dailyNotes: DailyNote[];
 }
 
 export interface HabitFormData {

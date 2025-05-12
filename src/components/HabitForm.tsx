@@ -35,6 +35,7 @@ const HabitForm: React.FC<HabitFormProps> = ({ onHabitAdded }) => {
       lastCompleted: null,
       createdAt: new Date().toISOString(),
       completedDates: [],
+      dailyNotes: []
     };
 
     const existingHabits = await localforage.getItem<Habit[]>('habits') || [];
