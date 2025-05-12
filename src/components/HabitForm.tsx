@@ -39,7 +39,13 @@ const HabitForm: React.FC<HabitFormProps> = ({ onHabitAdded }) => {
     };
 
     const existingHabits = await localforage.getItem<Habit[]>('habits') || [];
-    await localforage.setItem('habits', [...existingHabits, newHabit]);
+    
+    const updatedHabits = existingHabits.map(habit => ({
+      ...habit,
+      dailyNotes: habit.dailyNotes || []
+    }));
+    
+    await localforage.setItem('habits', [...updatedHabits, newHabit]);
     
     setFormData({ name: '', description: '' });
     onHabitAdded();

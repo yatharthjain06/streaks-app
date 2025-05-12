@@ -33,7 +33,12 @@ const HabitList: React.FC = () => {
     const loadHabits = async () => {
       const savedHabits = await localforage.getItem<Habit[]>('habits');
       if (savedHabits) {
-        setHabits(savedHabits);
+        // Ensure all habits have dailyNotes
+        const updatedHabits = savedHabits.map(habit => ({
+          ...habit,
+          dailyNotes: habit.dailyNotes || []
+        }));
+        setHabits(updatedHabits);
       }
     };
     loadHabits();

@@ -25,9 +25,9 @@ const DailyNotesDialog: React.FC<DailyNotesDialogProps> = ({
   open,
   onClose,
   habitName,
-  notes,
+  notes = [],
 }) => {
-  const sortedNotes = [...notes].sort((a, b) => 
+  const sortedNotes = [...(notes || [])].sort((a, b) => 
     new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
@@ -63,7 +63,7 @@ const DailyNotesDialog: React.FC<DailyNotesDialogProps> = ({
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        {notes.length === 0 ? (
+        {!notes?.length ? (
           <Typography color="text.secondary" align="center" sx={{ py: 2 }}>
             No daily notes yet.
           </Typography>
