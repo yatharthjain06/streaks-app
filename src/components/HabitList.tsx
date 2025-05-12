@@ -77,13 +77,27 @@ const HabitList: React.FC = () => {
   };
 
   return (
-    <Paper elevation={2}>
+    <Paper 
+      elevation={2}
+      sx={{
+        background: 'linear-gradient(145deg, #ffffff 0%, #f8f6ff 100%)',
+        border: '1px solid',
+        borderColor: 'primary.light',
+        borderRadius: 3,
+      }}
+    >
       <List>
         {habits.length === 0 ? (
           <ListItem>
             <ListItemText
               primary={
-                <Typography align="center" color="textSecondary">
+                <Typography 
+                  align="center" 
+                  sx={{ 
+                    color: 'text.secondary',
+                    fontStyle: 'italic'
+                  }}
+                >
                   No habits added yet. Add your first habit to get started!
                 </Typography>
               }
@@ -93,13 +107,43 @@ const HabitList: React.FC = () => {
           habits.map((habit) => {
             const completedToday = habit.lastCompleted ? isToday(new Date(habit.lastCompleted)) : false;
             return (
-              <ListItem key={habit.id}>
+              <ListItem 
+                key={habit.id}
+                sx={{
+                  borderBottom: '1px solid',
+                  borderColor: 'primary.light',
+                  '&:last-child': {
+                    borderBottom: 'none',
+                  },
+                  transition: 'all 0.2s',
+                  '&:hover': {
+                    backgroundColor: 'rgba(103, 58, 183, 0.04)',
+                  },
+                }}
+              >
                 <ListItemText
-                  primary={habit.name}
+                  primary={
+                    <Typography 
+                      variant="h6" 
+                      sx={{ 
+                        fontSize: '1.1rem',
+                        fontWeight: 600,
+                        color: 'primary.dark'
+                      }}
+                    >
+                      {habit.name}
+                    </Typography>
+                  }
                   secondary={
                     <Box sx={{ mt: 1 }}>
                       {habit.description && (
-                        <Typography variant="body2" color="textSecondary" gutterBottom>
+                        <Typography 
+                          variant="body2" 
+                          sx={{ 
+                            color: 'text.secondary',
+                            mb: 1
+                          }}
+                        >
                           {habit.description}
                         </Typography>
                       )}
@@ -107,13 +151,17 @@ const HabitList: React.FC = () => {
                         label={`${habit.streak} day streak`}
                         size="small"
                         color={habit.streak > 0 ? "primary" : "default"}
-                        sx={{ mr: 1 }}
+                        sx={{ 
+                          mr: 1,
+                          fontWeight: 500
+                        }}
                       />
                       {completedToday && (
                         <Chip
                           label="Completed today"
                           size="small"
-                          color="success"
+                          color="secondary"
+                          sx={{ fontWeight: 500 }}
                         />
                       )}
                     </Box>
@@ -123,8 +171,13 @@ const HabitList: React.FC = () => {
                   <IconButton
                     edge="end"
                     onClick={() => toggleHabit(habit.id)}
-                    color={completedToday ? "success" : "primary"}
-                    sx={{ mr: 1 }}
+                    color={completedToday ? "secondary" : "primary"}
+                    sx={{ 
+                      mr: 1,
+                      '&:hover': {
+                        backgroundColor: completedToday ? 'secondary.light' : 'primary.light',
+                      },
+                    }}
                   >
                     {completedToday ? <Close /> : <Check />}
                   </IconButton>
@@ -132,6 +185,11 @@ const HabitList: React.FC = () => {
                     edge="end"
                     onClick={() => deleteHabit(habit.id)}
                     color="error"
+                    sx={{
+                      '&:hover': {
+                        backgroundColor: 'error.light',
+                      },
+                    }}
                   >
                     <Delete />
                   </IconButton>

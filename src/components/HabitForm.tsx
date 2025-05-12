@@ -45,8 +45,24 @@ const HabitForm: React.FC<HabitFormProps> = ({ onHabitAdded }) => {
   };
 
   return (
-    <Paper elevation={2} sx={{ p: 3, mb: 3 }}>
-      <Typography variant="h6" gutterBottom>
+    <Paper 
+      elevation={2} 
+      sx={{ 
+        p: 3,
+        background: 'linear-gradient(145deg, #ffffff 0%, #f8f6ff 100%)',
+        border: '1px solid',
+        borderColor: 'primary.light',
+        borderRadius: 3,
+      }}
+    >
+      <Typography 
+        variant="h6" 
+        gutterBottom
+        sx={{ 
+          color: 'primary.main',
+          fontWeight: 600,
+        }}
+      >
         Add New Habit
       </Typography>
       <form onSubmit={handleSubmit}>
@@ -57,6 +73,13 @@ const HabitForm: React.FC<HabitFormProps> = ({ onHabitAdded }) => {
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           margin="normal"
           required
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              '&:hover fieldset': {
+                borderColor: 'primary.main',
+              },
+            },
+          }}
         />
         <TextField
           fullWidth
@@ -66,14 +89,29 @@ const HabitForm: React.FC<HabitFormProps> = ({ onHabitAdded }) => {
           margin="normal"
           multiline
           rows={2}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              '&:hover fieldset': {
+                borderColor: 'primary.main',
+              },
+            },
+          }}
         />
         <Box sx={{ mt: 2 }}>
           <Button
             type="submit"
             variant="contained"
-            color="primary"
+            color="secondary"
             startIcon={<Add />}
             disabled={!formData.name.trim()}
+            sx={{
+              px: 4,
+              py: 1,
+              fontWeight: 600,
+              '&:hover': {
+                backgroundColor: 'secondary.dark',
+              },
+            }}
           >
             Add Habit
           </Button>
